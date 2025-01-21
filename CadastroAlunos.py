@@ -1,192 +1,89 @@
 from time import sleep
 
-print('\n ----------- CADASTRO DE ALUNOS ----------- ')
+# Inicialização
+turmas = {"A": [], "B": [], "C": []}
 
-prosseguirCadastroTurma = 's'
-turmaA = []
-turmaB = []
-turmaC = []
+def cadastrar_alunos(turma):
+    while True:
+        nome = input("Nome do aluno: ").strip()
+        if nome in turmas[turma]:
+            print(f"O aluno '{nome}' já está cadastrado na turma {turma}.")
+        else:
+            turmas[turma].append(nome)
+        continuar = input("Deseja cadastrar outro aluno? [S/N]: ").lower().strip()
+        if continuar != 's':
+            break
 
-while prosseguirCadastroTurma == 's':
-    print("""
-Selecione a turma em que deseja cadastrar alunos:
-[ A ] Turma A
-[ B ] Turma B
-[ C ] Turma C
-    """)
-    opcaoTurma = str(input('Opção: ')).upper().strip()
-    prosseguirCadastro = 's'
+def exibir_alunos(turma, inverso=False):
+    print(f"\nLista de alunos da turma {turma}:")
+    alunos = turmas[turma][::-1] if inverso else turmas[turma]
+    for i, nome in enumerate(alunos, start=1):
+        print(f"{i}. {nome}")
 
-    if opcaoTurma == 'A':
-        while prosseguirCadastro == 's':
-            nome = str(input('Nome do aluno: '))
-            turmaA.append(nome)
-            prosseguirCadastro = str(input('Deseja continuar? [S/N]: ')).lower().strip()
-        print('Cadastrando alunos...')
-        sleep(2)
-    elif opcaoTurma == 'B':
-        while prosseguirCadastro == 's':
-            nome = str(input('Nome do aluno: '))
-            turmaB.append(nome)
-            prosseguirCadastro = str(input('Deseja continuar? [S/N]: ')).lower().strip()
-        print('Cadastrando alunos...')
-        sleep(2)
+def juntar_turmas(turma1, turma2):
+    alunos_unidos = turmas[turma1] + turmas[turma2]
+    print("\nLista de alunos das turmas unidas:")
+    for i, nome in enumerate(alunos_unidos, start=1):
+        print(f"{i}. {nome}")
+
+def remover_aluno(turma):
+    nome = input("Informe o nome do aluno para remover: ").strip()
+    if nome in turmas[turma]:
+        turmas[turma].remove(nome)
+        print(f"Aluno '{nome}' removido com sucesso.")
     else:
-        while prosseguirCadastro == 's':
-            nome = str(input('Nome do aluno: '))
-            turmaC.append(nome)
-            prosseguirCadastro = str(input('Deseja continuar? [S/N]: ')).lower().strip()
-        print('Cadastrando alunos...')
-        sleep(2)
+        print(f"Aluno '{nome}' não encontrado na turma {turma}.")
 
-    prosseguirCadastroTurma = str(input('Deseja cadastrar alunos em outra turma? [S/N]: ')).lower().strip()
+# Menu principal
+while True:
+    print("\n----------- MENU -----------")
+    print("[1] Cadastrar Alunos")
+    print("[2] Exibir Lista de Alunos")
+    print("[3] Exibir Lista Invertida")
+    print("[4] Juntar Duas Turmas")
+    print("[5] Remover Aluno")
+    print("[6] Sair")
+    opcao = input("Escolha uma opção: ").strip()
 
-desejaVoltar = 's'
-while desejaVoltar == 's':
-    print("""
-    Qual operação deseja realizar?:
-    
-    [ 1 ] Exibir lista de alunos
-    [ 2 ] Exibir lista de alunos em ordem inversa
-    [ 3 ] Juntar alunos de duas turmas
-    [ 4 ] Ordenar alunos por ordem alfabética
-    [ 5 ] Exibir a quantidade de alunos
-    [ 6 ] Remover aluno (s)
-    """)
-    opcaoOperacoes = int(input('Opção: '))
-
-    # OPERAÇÃO 1:
-    if opcaoOperacoes == 1:
-        print("""
-    Selecione a turma em que deseja exibir os alunos:
-    [ A ] Turma A
-    [ B ] Turma B
-    [ C ] Turma C
-    [ D ] Exibir listas de todas as turmas 
-            """)
-        opcaoTurma = str(input('Opção: ')).upper().strip()
-        if opcaoTurma == 'A':
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA A: ")
-            for i, v in enumerate(turmaA):
-                print(f'{i + 1} - {v}.')
-
-        elif opcaoTurma == 'B':
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA B: ")
-            for i, v in enumerate(turmaB):
-                print(f'{i + 1} - {v}.')
-
-        elif opcaoTurma == 'C':
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA C ")
-            for i, v in enumerate(turmaC):
-                print(f'{i + 1} - {v}.')
-
+    if opcao == "1":
+        turma = input("Informe a turma [A/B/C]: ").upper().strip()
+        if turma in turmas:
+            cadastrar_alunos(turma)
         else:
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA A: \n")
-            for i, v in enumerate(turmaA):
-                print(f'{i + 1} - {v}.')
+            print("Turma inválida.")
 
-            print("LISTA DE ALUNOS DA TURMA B: \n")
-            for i, v in enumerate(turmaB):
-                print(f'{i + 1} - {v}.')
-
-            print("LISTA DE ALUNOS DA TURMA C: \n")
-            for i, v in enumerate(turmaC):
-                print(f'{i + 1} - {v}.')
-
-        desejaVoltar = str(input('Deseja voltar? [S/N]: ')).lower().strip()
-
-    # OPERAÇÃO 2:
-    elif opcaoOperacoes == 2:
-        print("""
-    Selecione a turma em que deseja exibir os alunos:
-    [ A ] Turma A
-    [ B ] Turma B
-    [ C ] Turma C
-    [ D ] Exibir listas de todas as turmas 
-                """)
-        opcaoTurma = str(input('Opção: ')).upper().strip()
-        if opcaoTurma == 'A':
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA A: ")
-            turmaA.reverse()
-            for i, v in enumerate(turmaA):
-                print(f'{i + 1} - {v}.')
-        elif opcaoTurma == 'B':
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA B: ")
-            turmaB.reverse()
-            for i, v in enumerate(turmaB):
-                print(f'{i + 1} - {v}.')
-        elif opcaoTurma == 'C':
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA C ")
-            turmaC.reverse()
-            for i, v in enumerate(turmaC):
-                print(f'{i + 1} - {v}.')
+    elif opcao == "2":
+        turma = input("Informe a turma [A/B/C]: ").upper().strip()
+        if turma in turmas:
+            exibir_alunos(turma)
         else:
-            print('Buscando alunos para exibir...')
-            sleep(2)
-            print("LISTA DE ALUNOS DA TURMA A: \n")
-            for i, v in enumerate(turmaA):
-                print(f'{i + 1} - {v}.')
-            print("LISTA DE ALUNOS DA TURMA B: \n")
-            for i, v in enumerate(turmaB):
-                print(f'{i + 1} - {v}.')
-            print("LISTA DE ALUNOS DA TURMA C: \n")
-            for i, v in enumerate(turmaC):
-                print(f'{i + 1} - {v}.')
+            print("Turma inválida.")
 
-# OPERAÇÃO 3:
-    elif opcaoOperacoes == 3:
-        print("""
-            Selecione a primeira turma:
-            [ A ] Turma A
-            [ B ] Turma B
-            [ C ] Turma C
-            [ D ] Exibir listas de todas as turmas 
-                        """)
-        opcaoTurma1 = str(input('Turma 1: ')).upper().strip()
-
-        if opcaoTurma1 == 'A':
-            opcaoTurma1 = turmaA.copy()
-        elif opcaoTurma1 == 'B':
-            opcaoTurma1 = turmaB.copy()
+    elif opcao == "3":
+        turma = input("Informe a turma [A/B/C]: ").upper().strip()
+        if turma in turmas:
+            exibir_alunos(turma, inverso=True)
         else:
-            opcaoTurma1 = turmaC.copy()
+            print("Turma inválida.")
 
-        opcaoTurma2 = str(input('Turma 2: ')).upper().strip()
-
-        if opcaoTurma2 == 'A':
-            opcaoTurma2 = turmaA.copy()
-        elif opcaoTurma2 == 'B':
-            opcaoTurma2 = turmaB.copy()
+    elif opcao == "4":
+        turma1 = input("Informe a primeira turma [A/B/C]: ").upper().strip()
+        turma2 = input("Informe a segunda turma [A/B/C]: ").upper().strip()
+        if turma1 in turmas and turma2 in turmas:
+            juntar_turmas(turma1, turma2)
         else:
-            opcaoTurma2 = turmaC.copy()
-        turmaUnida = opcaoTurma1 + opcaoTurma2
+            print("Turma inválida.")
 
-        print("LISTA DE ALUNOS DAS TURMAS UNIDAS: \n")
-        for i, v in enumerate(turmaUnida):
-            print(f'{i + 1} - {v}.')
+    elif opcao == "5":
+        turma = input("Informe a turma [A/B/C]: ").upper().strip()
+        if turma in turmas:
+            remover_aluno(turma)
+        else:
+            print("Turma inválida.")
 
-    # OPERAÇÃO 4:
-    elif opcaoOperacoes == 4:
-        print('oi')
+    elif opcao == "6":
+        print("Saindo do programa...")
+        break
 
-    # OPERAÇÃO 5:
-    elif opcaoOperacoes == 5:
-        print('oi')
-
-    # OPERAÇÃO 6:
     else:
-        print('oi')
+        print("Opção inválida. Tente novamente.")
